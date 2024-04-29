@@ -1,5 +1,6 @@
 ﻿public class Livro
 {
+    int quantidade;
     Livro[] estante = new Livro[10];
     public string Titulo;
     public string Autor;
@@ -13,7 +14,6 @@
     {
 
     }
-
 
     public void definirTitulo(string titulo)
     {
@@ -50,11 +50,11 @@
         this.Paginas = paginas;
     }
 
-    public Livro criarLivro(Livro livro)
+    public Livro criarLivro() //Método para criar livros com seus atributos.
     {
-        Livro livro1 = new Livro();
-
-        Console.WriteLine("Insira o titulo do livro: ");
+        Livro livro = new Livro();
+        Console.WriteLine("--------------------------------------------------------");
+        Console.WriteLine("\nInsira o titulo do livro: ");
         livro.definirTitulo(Console.ReadLine());
 
         Console.WriteLine("Insira o autor do livro: ");
@@ -78,15 +78,26 @@
         return livro;
     }
 
-    public void inserirLivros()
+
+    public void inserirLivros() //Repete o looping de criar livros, de acordo com a quantidade de livros
     {
-        for (int i = 0; i < 10; i++)
+        do
         {
-            estante[i] = criarLivro(this);
+            Console.Write("\n\n|Digite quantos livros deseja inserir: ");
+            quantidade = int.Parse(Console.ReadLine());
+            if (quantidade < 0 || quantidade > 10)
+            {
+                Console.WriteLine("\nValor inválido! \n| Mínimo: 1 livro | Máximo: 10 livros|\n");
+            }
+        } while (quantidade < 0 || quantidade > 10);
+
+        for (int i = 0; i < quantidade; i++)
+        {
+            estante[i] = criarLivro(); //Usa função criar livros 
         }
     }
 
-    public void imprimirLivros()
+    public void imprimirInfo() //Estrutura de impressão das informações dos livros
     {
         Console.WriteLine("\n----- INFORMAÇÕES DO LIVRO ----\n");
         Console.WriteLine("Título: {0}", this.Titulo);
@@ -98,14 +109,30 @@
         Console.WriteLine("Quantidade de Páginas: {0}", this.Paginas);
     }
 
-
-    public void imprimirPosicao(int posicao)
+    public void ImprimirLivros() //Imprime todos os livros 
     {
-
-        Console.WriteLine("Digite o número da posição de um livro: ");
-        posicao = int.Parse(Console.ReadLine());
-        estante[posicao] = new Livro();
-        estante[posicao].imprimirLivros();
+        for (int i = 0; i < estante.Length; i++)
+        {
+            if (estante[i] != null)
+            {
+                Console.WriteLine($"\n\n|Livro na posição {i + 1}|:");
+                estante[i].imprimirInfo(); //Usa o método imprimirInfo
+            }
+        }
     }
 
+    public void ImprimirPosicao()
+    {
+        Console.WriteLine("\nDigite o número da posição de um livro: ");
+        int posicao = int.Parse(Console.ReadLine());
+        if (posicao >= 1 && posicao <= quantidade)
+        {
+            Console.WriteLine($"Livro na posição {posicao}:");
+            estante[posicao - 1].imprimirInfo();
+        }
+        else
+        {
+            Console.WriteLine("Posição inválida.");
+        }
+    }
 }
